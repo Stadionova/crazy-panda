@@ -1,0 +1,22 @@
+.table {
+    margin: 0 auto;
+    margin-top: 50px;
+    table-layout: fixed;
+    width: 1200px;
+    tr {
+        border: 1px solid black;
+        height: 20px;
+        width: 100px;
+        td {
+            border: 1px solid black;
+            height: 20px;
+            width: 100px;
+        }
+        input {
+            width: 200px;
+        }
+    }
+}
+.hide {
+    display: none;
+}
