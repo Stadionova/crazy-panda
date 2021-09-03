@@ -10,7 +10,8 @@ const mapStateToProps = (state) => {
         tableColumns: state.tableColumns,
         rowsValues: state.rowsValues,
         arrOfMatches: state.arrOfMatches,
-        isFilterTurnedOn: state.isFilterTurnedOn
+        isFilterTurnedOn: state.isFilterTurnedOn,
+        page: state.page
     };
 }
 
@@ -139,6 +140,7 @@ class TableContainer extends React.Component {
         }
     }
     render() {
+        console.log('this.props.page ', this.props.page);
         return (
             <>
                 <Table renderTable={this.renderTable} />

@@ -16,7 +16,18 @@ const initialState = {
     },
     rowsValues: {},
     arrOfMatches: [],
-    isFilterTurnedOn: false
+    isFilterTurnedOn: false,
+    page: 1,
+    pagesData: {
+        1: {
+            1: ['f', 'd', '', 4],
+            2: ['c', 1]
+        },
+        2: {
+            1: ['0', '', '', 'z'],
+            2: ['', 1, 'vvv']
+        }
+    }
 };
 
 function toDoListReducer(state = initialState, action) {
