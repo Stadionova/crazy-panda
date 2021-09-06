@@ -6,7 +6,7 @@ import Search from './Search';
 const mapStateToProps = function (state) {
     return {
         newTaskInputValue: state.newTaskInputValue,
-        rowsValues: state.rowsValues
+        pagesData: state.pagesData
     };
 }
 
@@ -24,17 +24,23 @@ const mapDispatchToProps = (dispatch) => {
 
 class SearchContainer extends React.Component {
     render() {
+        let currentPageHref = window.location.href.slice(-1);
         if (this.props.newTaskInputValue !== '') {
-            let arrOfMatches = [];
-            for (let key in this.props.rowsValues) {
-                this.props.rowsValues[key] && this.props.rowsValues[key].map(task => {
+            let arrOfMatches = {};
+            for (let key in this.props.pagesData[currentPageHref]) {
+                this.props.pagesData[currentPageHref][key] && this.props.pagesData[currentPageHref][key].map(task => {
                     if (task === this.props.newTaskInputValue) {
-                        arrOfMatches.push(key);
+                        if (arrOfMatches[currentPageHref] && arrOfMatches[currentPageHref].length > 0) {
+                            arrOfMatches[currentPageHref].push(key);
+                        } else {
+                            arrOfMatches[currentPageHref] = [];
+                            arrOfMatches[currentPageHref].push(key);
+                        }
                     }
                     return arrOfMatches;
                 });
             }
-            if (arrOfMatches.length > 0) {
+            if (arrOfMatches && arrOfMatches[currentPageHref] && arrOfMatches[currentPageHref].length > 0) {
                 this.props.rowsToHide(arrOfMatches);
             }
         } else {

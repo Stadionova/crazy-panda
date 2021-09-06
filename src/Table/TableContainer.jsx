@@ -6,12 +6,10 @@ import classes from './Table.module.scss';
 
 const mapStateToProps = (state) => {
     return {
-        newTaskInputValue: state.newTaskInputValue,
         tableColumns: state.tableColumns,
-        rowsValues: state.rowsValues,
-        arrOfMatches: state.arrOfMatches,
         isFilterTurnedOn: state.isFilterTurnedOn,
-        page: state.page
+        pagesData: state.pagesData,
+        arrOfMatches: state.arrOfMatches
     };
 }
 
@@ -56,38 +54,35 @@ class TableContainer extends React.Component {
         }
         return tds;
     }
+    renderHeadersWithNums(tds, i, idtr) {
+        tds.push(
+            <input
+                key={i}
+                className={`tr_${idtr}-td_${i}`}
+                onChange={this.props.getInputValue}
+                placeholder={idtr}
+                style={{ textAlign: "center" }}
+            />
+        );
+    }
     renderCellsWithData(tds, idtr) {
-        for (let i = 0; i < 5; i++) {
-            let id = i;
-            if (id === 0) {
-                tds.push(
-                    <input
-                        key={i}
-                        className={`tr_${idtr}-td_${id}`}
-                        onChange={this.props.getInputValue}
-                        placeholder={idtr}
-                        style={{ textAlign: "center" }}
-                    />
-                );
-            } else {
-                tds.push(
-                    <input
-                        key={i}
-                        className={`tr_${idtr}-td_${id}`}
-                        onChange={this.props.getInputValue}
-                    />
-                );
-            }
-        }
+        let currentPageHref = window.location.href.slice(-1);
+        this.renderHeadersWithNums(tds, 0, idtr);
+        this.props.pagesData[currentPageHref][idtr].forEach((value, index) => {
+            tds.push(
+                <input
+                    key={index + 1}
+                    className={`tr_${idtr}-td_${index + 1}`}
+                    onChange={this.props.getInputValue}
+                    value={value}
+                />
+            );
+        });
         return tds;
     }
     renderTd = (idtr) => {
         let tds = [];
-        if (idtr === 0) {
-            this.renderTableHeaders(tds, idtr);
-        } else {
-            this.renderCellsWithData(tds, idtr);
-        }
+        idtr === 0 ? this.renderTableHeaders(tds, idtr) : this.renderCellsWithData(tds, idtr);
         return tds;
     }
     reverseRows(cell) {
@@ -102,45 +97,26 @@ class TableContainer extends React.Component {
     }
     renderTable = () => {
         let cell = [];
-        let idCount = 0;
-        if (this.props.arrOfMatches && this.props.arrOfMatches.length > 0) {
-            for (let i = 0; i < 10; i++) {
-                if (i === 0) {
-                    cell.push(
-                        <tr key={idCount} id={idCount} onClick={this.props.catchClickOnFilter}>
-                            {this.renderTd(i)}
-                        </tr>
-                    );
-                    idCount += 1;
-                } else {
-                    this.props.arrOfMatches.forEach((tableData) => {
-                        if (tableData === String(idCount)) {
-                            cell.push(<tr key={idCount} id={idCount}>{this.renderTd(idCount)}</tr>);
-                            idCount += 1;
-                        } else {
-                            cell.push(<tr key={idCount} id={idCount} className={classes.hide}>{this.renderTd(idCount)}</tr>);
-                            idCount += 1;
-                        }
-                    });
-                }
+        let currentPageHref = window.location.href.slice(-1);
+        cell.push(<tr key={0} id={0}>{this.renderTd(0)}</tr>);
+        if (this.props.arrOfMatches === undefined) {
+
+            for (let key in this.props.pagesData[currentPageHref]) {
+                cell.push(<tr key={key}
+                    id={key}>{this.renderTd(key)}</tr>);
             }
-            return this.reverseRows(cell);
         } else {
-            for (let i = 0; i <= 10; i++) {
-                let id;
-                if (i === 0) {
-                    id = i;
-                    cell.push(<tr key={i} id={id}>{this.renderTd(id)}</tr>);
-                } else {
-                    id = i;
-                    cell.push(<tr key={i} id={id}>{this.renderTd(id)}</tr>);
-                }
+            for (let key in this.props.pagesData[currentPageHref]) {
+                this.props.arrOfMatches[currentPageHref].forEach((trToHide) => {
+                    cell.push(<tr key={key}
+                        className={key === trToHide ? classes.show : classes.hide}
+                        id={key}>{this.renderTd(key)}</tr>);
+                });
             }
-            return this.reverseRows(cell);
         }
+        return this.reverseRows(cell);
     }
     render() {
-        console.log('this.props.page ', this.props.page);
         return (
             <>
                 <Table renderTable={this.renderTable} />

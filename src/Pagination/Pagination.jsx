@@ -2,15 +2,15 @@ import React from 'react';
 import classes from './Pagination.module.scss';
 import { NavLink } from "react-router-dom";
 
-const Pagination = (props) => {
+const Pagination = () => {
     return (
         <div className={classes.pagination}>
-            <NavLink to='/page/1' className={classes.first}>1</NavLink>
-            <NavLink to='/page/2' className={classes.second}>2</NavLink>
-            <NavLink to='/page/3' className={classes.third}>3</NavLink>
-            <NavLink to='/page/4' className={classes.fourth}>4</NavLink>
-            <NavLink to='/page/5' className={classes.fifth}>5</NavLink>
-            <NavLink to='/page/6' className={classes.sixth}>6</NavLink>
+            <NavLink to={{ pathname: '/page/1', page: 1 }} >1</NavLink>
+            <NavLink to={{ pathname: '/page/2', page: 2 }} >2</NavLink>
+            <NavLink to={{ pathname: '/page/3', page: 3 }} >3</NavLink>
+            {/* <NavLink to={{ pathname: '/page/4', page: 4 }} >4</NavLink>
+            <NavLink to={{ pathname: '/page/5', page: 5 }} >5</NavLink>
+            <NavLink to={{ pathname: '/page/6', page: 6 }} >6</NavLink> */}
         </div>
     )
 }

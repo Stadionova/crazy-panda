@@ -7,6 +7,10 @@ const TURN_ON_FILTER = 'TURN_ON_FILTER';
 
 const initialState = {
     newTaskInputValue: '',
+    wasPaginationClicked: false,
+    isPageWasChanged: false,
+    arrOfMatches: {},
+    isFilterTurnedOn: false,
     tableColumns: {
         0: '',
         1: 'A',
@@ -14,18 +18,27 @@ const initialState = {
         3: 'C',
         4: 'D'
     },
-    rowsValues: {},
-    arrOfMatches: [],
-    isFilterTurnedOn: false,
-    page: 1,
     pagesData: {
         1: {
-            1: ['f', 'd', '', 4],
-            2: ['c', 1]
+            1: ['q', 'w', 'r', 'f'],
+            2: ['q', 'й', 'r', 'п'],
+            3: ['q', 'w', 'z', 'f'],
+            4: ['q', 'ww', 'r', 'у'],
+            5: ['s', 'w', 'r', 'f']
         },
         2: {
-            1: ['0', '', '', 'z'],
-            2: ['', 1, 'vvv']
+            1: ['q', 'w', 'l', 'f'],
+            2: ['x', 'й', 'rp', 'п'],
+            3: ['xx', 'w', 'zzzzz', 'f'],
+            4: ['vb', 'ww', '1', 'у'],
+            5: ['ss', 'w', '2', 'f']
+        },
+        3: {
+            1: ['1', 'w', '6', 'f'],
+            2: ['2', 'й', '7p', 'п'],
+            3: ['3x', 'w', '8zzzz', 'f'],
+            4: ['4b', 'ww', '9', 'у'],
+            5: ['5s', 'w', '10', 'f']
         }
     }
 };
@@ -38,6 +51,7 @@ function toDoListReducer(state = initialState, action) {
                 newTaskInputValue: action.inputValue
             }
         case SHOW_THESE_ROWSES_AFTER_SEARCH:
+            console.log('action.arrOfMatches ', action.arrOfMatches);
             return {
                 ...state,
                 arrOfMatches: action.arrOfMatches
@@ -55,26 +69,35 @@ function toDoListReducer(state = initialState, action) {
                 }
             }
         case TABLE_DATA_WAS_CHANGED:
-            let stateCopy = {
-                ...state.rowsValues
+            let pagesDataCopy = {
+                ...state.pagesData
             }
 
             let tr = [action.changedTrId];
             let td = [action.changedTdIndex];
+            let currentPageHref = window.location.href.slice(-1);
 
-            if (stateCopy[tr]) {
-                if (stateCopy[tr][td - 1]) {
-                    stateCopy[tr][td - 1] = action.newTdValue;
+            if (pagesDataCopy[currentPageHref] && pagesDataCopy[currentPageHref][tr]) {
+                if (pagesDataCopy[currentPageHref][tr][td - 1]) {
+                    pagesDataCopy[currentPageHref][tr].length = td;
+                    pagesDataCopy[currentPageHref][tr].splice(td, 0, action.newTdValue);
                 } else {
-                    stateCopy[tr].push(action.newTdValue);
+                    pagesDataCopy[currentPageHref][tr].length = td;
+                    pagesDataCopy[currentPageHref][tr][td] = action.newTdValue;
                 }
+            } else if (!pagesDataCopy[currentPageHref]) {
+                pagesDataCopy[currentPageHref] = {};
+                pagesDataCopy[currentPageHref][tr] = [];
+                pagesDataCopy[currentPageHref][tr].length = td;
+                pagesDataCopy[currentPageHref][tr].splice(td, 0, action.newTdValue);
             } else {
-                stateCopy[tr] = [action.newTdValue];
+                pagesDataCopy[currentPageHref][tr] = [];
+                pagesDataCopy[currentPageHref][tr].length = td;
+                pagesDataCopy[currentPageHref][tr].splice(td, 0, action.newTdValue);
             }
-
             return {
                 ...state,
-                rowsValues: stateCopy
+                pagesData: pagesDataCopy
             }
         default:
             return state;
