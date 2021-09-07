@@ -3,7 +3,7 @@ import './App.css';
 import TableContainer from './Table/TableContainer';
 import SearchContainer from './Search/SearchContainer';
 import Pagination from './Pagination/Pagination';
-import { Route, BrowserRouter } from "react-router-dom";
+import { Route, BrowserRouter, Switch } from "react-router-dom";
 
 class App extends React.Component {
   render() {
@@ -11,9 +11,11 @@ class App extends React.Component {
       <BrowserRouter>
         <div className="App">
           <SearchContainer />
-          <Route path='/page/1' component={TableContainer} />
-          <Route path='/page/2' component={TableContainer} />
-          <Route path='/page/3' component={TableContainer} />
+          <Switch>
+            <Route path='/crazy-panda/page/1' component={TableContainer} />
+            <Route path='/crazy-panda/page/2' component={TableContainer} />
+            <Route path='/crazy-panda/page/3' component={TableContainer} />
+          </Switch>
           <Pagination />
         </div>
       </BrowserRouter>
