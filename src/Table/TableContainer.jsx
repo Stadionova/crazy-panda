@@ -56,7 +56,7 @@ class TableContainer extends React.Component {
     renderCellsWithData(tds, idtr) {
         let currentPageHref = window.location.href.slice(-1);
         this.renderHeadersWithNums(tds, 0, idtr);
-        if (typeof (currentPageHref) !== Number) {
+        if (currentPageHref === '/') {
             this.props.pagesData[1][idtr].forEach((value, index) => {
                 tds.push(
                     <td key={index + 1}
@@ -98,7 +98,7 @@ class TableContainer extends React.Component {
         let currentPageHref = window.location.href.slice(-1);
         cell.push(<tr key={0} id={0}>{this.renderTd(0)}</tr>);
         if (this.props.arrOfMatches === undefined) {
-            if (typeof (currentPageHref) !== Number) {
+            if (currentPageHref === '/') {
                 console.log('this.props.pagesData ', this.props.pagesData);
                 for (let key in this.props.pagesData[1]) {
                     cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
