@@ -6,7 +6,7 @@ import Pagination from './Pagination/Pagination';
 import { Route, BrowserRouter } from "react-router-dom";
 
 class App extends React.Component {
-  render(props) {
+  render() {
     return (
       <BrowserRouter>
         <div className="App">
@@ -14,10 +14,6 @@ class App extends React.Component {
           <Route path='/page/1' component={TableContainer} />
           <Route path='/page/2' component={TableContainer} />
           <Route path='/page/3' component={TableContainer} />
-          {/* <Route path='/page/4' component={TableContainer} />
-          <Route path='/page/5' component={TableContainer} />
-          <Route path='/page/6' component={TableContainer} /> */}
-          {/* <TableContainer /> */}
           <Pagination />
         </div>
       </BrowserRouter>

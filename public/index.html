@@ -1,43 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <title>React App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Slider - Colorpicker</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <style>
+    #red,
+    #green,
+    #blue {
+      float: left;
+      clear: left;
+      width: 300px;
+      margin: 15px;
+    }
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+    #swatch {
+      width: 120px;
+      height: 100px;
+      margin-top: 18px;
+      margin-left: 350px;
+      background-image: none;
+    }
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+    #red .ui-slider-range {
+      background: #ef2929;
+    }
+
+    #red .ui-slider-handle {
+      border-color: #ef2929;
+    }
+
+    #green .ui-slider-range {
+      background: #8ae234;
+    }
+
+    #green .ui-slider-handle {
+      border-color: #8ae234;
+    }
+
+    #blue .ui-slider-range {
+      background: #729fcf;
+    }
+
+    #blue .ui-slider-handle {
+      border-color: #729fcf;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+    $(function () {
+      function hexFromRGB(r, g, b) {
+        var hex = [
+          r.toString(16),
+          g.toString(16),
+          b.toString(16)
+        ];
+        $.each(hex, function (nr, val) {
+          if (val.length === 1) {
+            hex[nr] = "0" + val;
+          }
+        });
+        return hex.join("").toUpperCase();
+      }
+
+      let idForChangeColor;
+
+      function refreshSwatch() {
+        var red = $("#red").slider("value"),
+          green = $("#green").slider("value"),
+          blue = $("#blue").slider("value"),
+          hex = hexFromRGB(red, green, blue);
+        if (idForChangeColor === "#root") {
+          $(idForChangeColor).css("background-color", "#" + hex);
+          $("#swatch").css("background-color", "#" + hex);
+        } else {
+          $(idForChangeColor).css("color", "#" + hex);
+          $("#swatch").css("color", "#" + hex);
+        }
+      }
+
+      document.getElementById('background').addEventListener("click", function (event) {
+        idForChangeColor = "#root";
+      });
+
+      document.getElementById('text').addEventListener("click", function (event) {
+        idForChangeColor = "td";
+      });
+
+      $("#red, #green, #blue").slider({
+        orientation: "horizontal",
+        range: "min",
+        max: 255,
+        value: 127,
+        slide: refreshSwatch,
+        change: refreshSwatch
+      });
+      $("#red").slider("value", 255);
+      $("#green").slider("value", 140);
+      $("#blue").slider("value", 60);
+    });
+  </script>
+</head>
+
+<body>
+  <div id="root">
+  </div>
+  <p class="ui-state-default ui-corner-all ui-helper-clearfix" style="padding:4px;">
+    Тут можно изменить цвет
+  </p>
+  <div>
+    <button id="text">text color</button>
+    <button id="background">background color</button>
+  </div>
+  <div id="red"></div>
+  <div id="green"></div>
+  <div id="blue"></div>
+  <div id="swatch" class="ui-widget-content ui-corner-all">Цвет текста</div>
+</body>
+
 </html>

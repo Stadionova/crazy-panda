@@ -26,22 +26,20 @@ class TableContainer extends React.Component {
             let id = +key;
             if (id > 0) {
                 tds.push(
-                    <input
-                        key={key}
+                    <td key={key}
                         className={`tr_${idtr}-td_${id}`}
-                        placeholder={this.props.tableColumns[key]}
                         onClick={this.props.catchClickOnFilter}
-                        style={{ textAlign: "center" }}
-                    />
+                        style={{ textAlign: "center" }}>
+                        {this.props.tableColumns[key]}
+                    </td>
                 );
             } else {
                 tds.push(
-                    <input
-                        key={key}
+                    <td key={key}
                         className={`tr_${idtr}-td_${id}`}
                         disabled="disabled"
-                        onClick={this.props.catchClickOnFilter}
-                    />
+                        onClick={this.props.catchClickOnFilter}>
+                    </td>
                 );
             }
         }
@@ -49,12 +47,11 @@ class TableContainer extends React.Component {
     }
     renderHeadersWithNums(tds, i, idtr) {
         tds.push(
-            <input
-                key={i}
+            <td key={i}
                 className={`tr_${idtr}-td_${i}`}
-                placeholder={idtr}
-                style={{ textAlign: "center" }}
-            />
+                style={{ textAlign: "center" }}>
+                {idtr}
+            </td>
         );
     }
     renderCellsWithData(tds, idtr) {
@@ -62,11 +59,10 @@ class TableContainer extends React.Component {
         this.renderHeadersWithNums(tds, 0, idtr);
         this.props.pagesData[currentPageHref][idtr].forEach((value, index) => {
             tds.push(
-                <input
-                    key={index + 1}
-                    className={`tr_${idtr}-td_${index + 1}`}
-                    value={value}
-                />
+                <td key={index + 1}
+                    className={`tr_${idtr}-td_${index + 1}`}>
+                    {value}
+                </td>
             );
         });
         return tds;
