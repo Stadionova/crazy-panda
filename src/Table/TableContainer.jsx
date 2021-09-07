@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { changeTableData, turnOnFilter } from "../store";
+import { turnOnFilter } from "../store";
 import Table from './Table';
-import classes from './Table.module.scss';
 
 const mapStateToProps = (state) => {
     return {
@@ -15,12 +14,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getInputValue: (event) => {
-            const changedTdIndex = event.target.className.slice(-1);
-            const changedTrId = event.target.parentNode.id;
-            const newTdValue = event.target.value;
-            dispatch(changeTableData(changedTdIndex, changedTrId, newTdValue));
-        },
         catchClickOnFilter: () => {
             dispatch(turnOnFilter(true));
         }
@@ -59,7 +52,6 @@ class TableContainer extends React.Component {
             <input
                 key={i}
                 className={`tr_${idtr}-td_${i}`}
-                onChange={this.props.getInputValue}
                 placeholder={idtr}
                 style={{ textAlign: "center" }}
             />
@@ -73,7 +65,6 @@ class TableContainer extends React.Component {
                 <input
                     key={index + 1}
                     className={`tr_${idtr}-td_${index + 1}`}
-                    onChange={this.props.getInputValue}
                     value={value}
                 />
             );
@@ -105,7 +96,7 @@ class TableContainer extends React.Component {
             }
         } else {
             for (let key in this.props.pagesData[currentPageHref]) {
-                this.props.arrOfMatches[currentPageHref].forEach((trToHide) => {
+                this.props.arrOfMatches[currentPageHref]?.forEach((trToHide) => {
                     if (key === trToHide) {
                         cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
                     }

@@ -1,7 +1,6 @@
 import { createStore } from 'redux';
 
 const INPUT_TASK_VALUE_CHANGED = 'INPUT_TASK_VALUE_CHANGED';
-const TABLE_DATA_WAS_CHANGED = 'TABLE_DATA_WAS_CHANGED';
 const SHOW_THESE_ROWSES_AFTER_SEARCH = 'SHOW_THESE_ROWSES_AFTER_SEARCH';
 const TURN_ON_FILTER = 'TURN_ON_FILTER';
 
@@ -67,37 +66,6 @@ function toDoListReducer(state = initialState, action) {
                     isFilterTurnedOn: false
                 }
             }
-        case TABLE_DATA_WAS_CHANGED:
-            let pagesDataCopy = {
-                ...state.pagesData
-            }
-
-            let tr = [action.changedTrId];
-            let td = [action.changedTdIndex];
-            let currentPageHref = window.location.href.slice(-1);
-
-            if (pagesDataCopy[currentPageHref] && pagesDataCopy[currentPageHref][tr]) {
-                if (pagesDataCopy[currentPageHref][tr][td - 1]) {
-                    pagesDataCopy[currentPageHref][tr].length = td;
-                    pagesDataCopy[currentPageHref][tr].splice(td, 0, action.newTdValue);
-                } else {
-                    pagesDataCopy[currentPageHref][tr].length = td;
-                    pagesDataCopy[currentPageHref][tr][td] = action.newTdValue;
-                }
-            } else if (!pagesDataCopy[currentPageHref]) {
-                pagesDataCopy[currentPageHref] = {};
-                pagesDataCopy[currentPageHref][tr] = [];
-                pagesDataCopy[currentPageHref][tr].length = td;
-                pagesDataCopy[currentPageHref][tr].splice(td, 0, action.newTdValue);
-            } else {
-                pagesDataCopy[currentPageHref][tr] = [];
-                pagesDataCopy[currentPageHref][tr].length = td;
-                pagesDataCopy[currentPageHref][tr].splice(td, 0, action.newTdValue);
-            }
-            return {
-                ...state,
-                pagesData: pagesDataCopy
-            }
         default:
             return state;
     }
@@ -109,15 +77,6 @@ export const searchInputValueInTable = (inputValue) => {
     return {
         type: INPUT_TASK_VALUE_CHANGED,
         inputValue: inputValue
-    }
-};
-
-export const changeTableData = (changedTdIndex, changedTrId, newTdValue) => {
-    return {
-        type: TABLE_DATA_WAS_CHANGED,
-        changedTdIndex: changedTdIndex,
-        changedTrId: changedTrId,
-        newTdValue: newTdValue
     }
 };
 

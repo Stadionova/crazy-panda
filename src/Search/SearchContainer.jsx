@@ -28,9 +28,9 @@ class SearchContainer extends React.Component {
         if (this.props.newTaskInputValue !== '') {
             let arrOfMatches = {};
             for (let key in this.props.pagesData[currentPageHref]) {
-                this.props.pagesData[currentPageHref][key] && this.props.pagesData[currentPageHref][key].map(task => {
+                this.props.pagesData[currentPageHref][key].map(task => {
                     if (task === this.props.newTaskInputValue) {
-                        if (arrOfMatches[currentPageHref] && arrOfMatches[currentPageHref].length > 0) {
+                        if (arrOfMatches[currentPageHref]?.length > 0) {
                             arrOfMatches[currentPageHref].push(key);
                         } else {
                             arrOfMatches[currentPageHref] = [];
@@ -40,7 +40,7 @@ class SearchContainer extends React.Component {
                     return arrOfMatches;
                 });
             }
-            if (arrOfMatches && arrOfMatches[currentPageHref] && arrOfMatches[currentPageHref].length > 0) {
+            if (arrOfMatches[currentPageHref]?.length > 0) {
                 this.props.rowsToHide(arrOfMatches);
             }
         } else {
