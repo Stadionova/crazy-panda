@@ -56,14 +56,25 @@ class TableContainer extends React.Component {
     renderCellsWithData(tds, idtr) {
         let currentPageHref = window.location.href.slice(-1);
         this.renderHeadersWithNums(tds, 0, idtr);
-        this.props.pagesData[currentPageHref][idtr].forEach((value, index) => {
-            tds.push(
-                <td key={index + 1}
-                    className={`tr_${idtr}-td_${index + 1}`}>
-                    {value}
-                </td>
-            );
-        });
+        if (typeof (currentPageHref) !== Number) {
+            this.props.pagesData[1][idtr].forEach((value, index) => {
+                tds.push(
+                    <td key={index + 1}
+                        className={`tr_${idtr}-td_${index + 1}`}>
+                        {value}
+                    </td>
+                );
+            });
+        } else {
+            this.props.pagesData[currentPageHref][idtr].forEach((value, index) => {
+                tds.push(
+                    <td key={index + 1}
+                        className={`tr_${idtr}-td_${index + 1}`}>
+                        {value}
+                    </td>
+                );
+            });
+        }
         return tds;
     }
     renderTd = (idtr) => {
@@ -87,26 +98,23 @@ class TableContainer extends React.Component {
         let currentPageHref = window.location.href.slice(-1);
         cell.push(<tr key={0} id={0}>{this.renderTd(0)}</tr>);
         if (this.props.arrOfMatches === undefined) {
-            for (let key in this.props.pagesData[currentPageHref]) {
-                cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
-            }
-        } else {
             if (typeof (currentPageHref) !== Number) {
+                console.log('this.props.pagesData ', this.props.pagesData);
                 for (let key in this.props.pagesData[1]) {
-                    this.props.arrOfMatches[currentPageHref]?.forEach((trToHide) => {
-                        if (key === trToHide) {
-                            cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
-                        }
-                    });
+                    cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
                 }
             } else {
                 for (let key in this.props.pagesData[currentPageHref]) {
-                    this.props.arrOfMatches[currentPageHref]?.forEach((trToHide) => {
-                        if (key === trToHide) {
-                            cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
-                        }
-                    });
+                    cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
                 }
+            }
+        } else {
+            for (let key in this.props.pagesData[currentPageHref]) {
+                this.props.arrOfMatches[currentPageHref]?.forEach((trToHide) => {
+                    if (key === trToHide) {
+                        cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
+                    }
+                });
             }
         }
         return this.reverseRows(cell);
