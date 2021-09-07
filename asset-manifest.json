@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/crazy-panda/static/css/main.02ce8f10.chunk.css",
-    "main.js": "/crazy-panda/static/js/main.b6e32072.chunk.js",
-    "main.js.map": "/crazy-panda/static/js/main.b6e32072.chunk.js.map",
+    "main.js": "/crazy-panda/static/js/main.7549882e.chunk.js",
+    "main.js.map": "/crazy-panda/static/js/main.7549882e.chunk.js.map",
     "runtime-main.js": "/crazy-panda/static/js/runtime-main.a9d56579.js",
     "runtime-main.js.map": "/crazy-panda/static/js/runtime-main.a9d56579.js.map",
     "static/js/2.284e5ec4.chunk.js": "/crazy-panda/static/js/2.284e5ec4.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.a9d56579.js",
     "static/js/2.284e5ec4.chunk.js",
     "static/css/main.02ce8f10.chunk.css",
-    "static/js/main.b6e32072.chunk.js"
+    "static/js/main.7549882e.chunk.js"
   ]
 }
