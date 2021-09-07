@@ -77,26 +77,39 @@
 
       let idForChangeColor;
 
+      function changeColor(placeForChange, hex, styleElem, elem) {
+        $('#root').css(styleElem, "#" + placeForChange);
+        $("#swatch").css(styleElem, "#" + placeForChange);
+        localStorage.setItem(elem, hex);
+      }
+
       function refreshSwatch() {
         var red = $("#red").slider("value"),
           green = $("#green").slider("value"),
           blue = $("#blue").slider("value"),
           hex = hexFromRGB(red, green, blue);
-        if (idForChangeColor === "#root") {
-          $(idForChangeColor).css("background-color", "#" + hex);
-          $("#swatch").css("background-color", "#" + hex);
+        if (idForChangeColor === "back") {
+          if (localStorage.getItem('back')) {
+            changeColor(localStorage.getItem('back'), hex, "background-color", 'back');
+          } else {
+            changeColor(hex, hex, "background-color", 'back');
+          }
         } else {
-          $(idForChangeColor).css("color", "#" + hex);
-          $("#swatch").css("color", "#" + hex);
+          if (localStorage.getItem('text')) {
+            changeColor(localStorage.getItem('text'), hex, "color", 'text');
+          } else {
+            changeColor(hex, hex, "color", 'text');
+          }
         }
+
       }
 
-      document.getElementById('background').addEventListener("click", function (event) {
-        idForChangeColor = "#root";
+      document.getElementById('background').addEventListener("click", () => {
+        idForChangeColor = "back";
       });
 
-      document.getElementById('text').addEventListener("click", function (event) {
-        idForChangeColor = "td";
+      document.getElementById('text').addEventListener("click", () => {
+        idForChangeColor = "text";
       });
 
       $("#red, #green, #blue").slider({
