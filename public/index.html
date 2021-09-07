@@ -56,6 +56,10 @@
     #blue .ui-slider-handle {
       border-color: #729fcf;
     }
+
+    .active {
+      background-color: #729fcf;
+    }
   </style>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -105,10 +109,14 @@
       }
 
       document.getElementById('background').addEventListener("click", () => {
+        document.getElementById('background').classList.add('active');
+        document.getElementById('text').classList.remove('active');
         idForChangeColor = "back";
       });
 
       document.getElementById('text').addEventListener("click", () => {
+        document.getElementById('text').classList.add('active');
+        document.getElementById('background').classList.remove('active');
         idForChangeColor = "text";
       });
 
@@ -134,7 +142,7 @@
     Тут можно изменить цвет
   </p>
   <div>
-    <button id="text">text color</button>
+    <button id="text" class="active">text color</button>
     <button id="background">background color</button>
   </div>
   <div id="red"></div>

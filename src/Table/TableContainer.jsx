@@ -23,11 +23,10 @@ const mapDispatchToProps = (dispatch) => {
 class TableContainer extends React.Component {
     renderTableHeaders(tds, idtr) {
         for (let key in this.props.tableColumns) {
-            let id = +key;
-            if (id > 0) {
+            if (+key > 0) {
                 tds.push(
                     <td key={key}
-                        className={`tr_${idtr}-td_${id}`}
+                        className={`tr_${idtr}-td_${+key}`}
                         onClick={this.props.catchClickOnFilter}
                         style={{ textAlign: "center" }}>
                         {this.props.tableColumns[key]}
@@ -36,7 +35,7 @@ class TableContainer extends React.Component {
             } else {
                 tds.push(
                     <td key={key}
-                        className={`tr_${idtr}-td_${id}`}
+                        className={`tr_${idtr}-td_${+key}`}
                         disabled="disabled"
                         onClick={this.props.catchClickOnFilter}>
                     </td>
@@ -69,8 +68,9 @@ class TableContainer extends React.Component {
     }
     renderTd = (idtr) => {
         let tds = [];
-        idtr === 0 ? this.renderTableHeaders(tds, idtr) : this.renderCellsWithData(tds, idtr);
-        return tds;
+        return idtr === 0
+            ? this.renderTableHeaders(tds, idtr)
+            : this.renderCellsWithData(tds, idtr);
     }
     reverseRows(cell) {
         if (this.props.isFilterTurnedOn === true) {

@@ -1,13 +1,11 @@
 import { createStore } from 'redux';
 
-const INPUT_TASK_VALUE_CHANGED = 'INPUT_TASK_VALUE_CHANGED';
-const SHOW_THESE_ROWSES_AFTER_SEARCH = 'SHOW_THESE_ROWSES_AFTER_SEARCH';
+const SEARCH_INPUT_VALUE_WAS_CHANGED = 'SEARCH_INPUT_VALUE_WAS_CHANGED';
+const SHOW_MATCHED_DATA_AFTER_SEARCH = 'SHOW_MATCHED_DATA_AFTER_SEARCH';
 const TURN_ON_FILTER = 'TURN_ON_FILTER';
 
 const initialState = {
     newTaskInputValue: '',
-    wasPaginationClicked: false,
-    isPageWasChanged: false,
     arrOfMatches: {},
     isFilterTurnedOn: false,
     tableColumns: {
@@ -44,12 +42,12 @@ const initialState = {
 
 function toDoListReducer(state = initialState, action) {
     switch (action.type) {
-        case INPUT_TASK_VALUE_CHANGED:
+        case SEARCH_INPUT_VALUE_WAS_CHANGED:
             return {
                 ...state,
                 newTaskInputValue: action.inputValue
             }
-        case SHOW_THESE_ROWSES_AFTER_SEARCH:
+        case SHOW_MATCHED_DATA_AFTER_SEARCH:
             return {
                 ...state,
                 arrOfMatches: action.arrOfMatches
@@ -75,14 +73,14 @@ const store = createStore(toDoListReducer, initialState);
 
 export const searchInputValueInTable = (inputValue) => {
     return {
-        type: INPUT_TASK_VALUE_CHANGED,
+        type: SEARCH_INPUT_VALUE_WAS_CHANGED,
         inputValue: inputValue
     }
 };
 
 export const showTheseRowses = (arrOfMatches) => {
     return {
-        type: SHOW_THESE_ROWSES_AFTER_SEARCH,
+        type: SHOW_MATCHED_DATA_AFTER_SEARCH,
         arrOfMatches: arrOfMatches
     }
 };
