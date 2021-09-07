@@ -51,7 +51,6 @@ function toDoListReducer(state = initialState, action) {
                 newTaskInputValue: action.inputValue
             }
         case SHOW_THESE_ROWSES_AFTER_SEARCH:
-            console.log('action.arrOfMatches ', action.arrOfMatches);
             return {
                 ...state,
                 arrOfMatches: action.arrOfMatches

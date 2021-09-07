@@ -100,17 +100,15 @@ class TableContainer extends React.Component {
         let currentPageHref = window.location.href.slice(-1);
         cell.push(<tr key={0} id={0}>{this.renderTd(0)}</tr>);
         if (this.props.arrOfMatches === undefined) {
-
             for (let key in this.props.pagesData[currentPageHref]) {
-                cell.push(<tr key={key}
-                    id={key}>{this.renderTd(key)}</tr>);
+                cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
             }
         } else {
             for (let key in this.props.pagesData[currentPageHref]) {
                 this.props.arrOfMatches[currentPageHref].forEach((trToHide) => {
-                    cell.push(<tr key={key}
-                        className={key === trToHide ? classes.show : classes.hide}
-                        id={key}>{this.renderTd(key)}</tr>);
+                    if (key === trToHide) {
+                        cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
+                    }
                 });
             }
         }
