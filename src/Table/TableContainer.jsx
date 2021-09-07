@@ -91,12 +91,22 @@ class TableContainer extends React.Component {
                 cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
             }
         } else {
-            for (let key in this.props.pagesData[currentPageHref]) {
-                this.props.arrOfMatches[currentPageHref]?.forEach((trToHide) => {
-                    if (key === trToHide) {
-                        cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
-                    }
-                });
+            if (typeof (currentPageHref) !== Number) {
+                for (let key in this.props.pagesData[1]) {
+                    this.props.arrOfMatches[currentPageHref]?.forEach((trToHide) => {
+                        if (key === trToHide) {
+                            cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
+                        }
+                    });
+                }
+            } else {
+                for (let key in this.props.pagesData[currentPageHref]) {
+                    this.props.arrOfMatches[currentPageHref]?.forEach((trToHide) => {
+                        if (key === trToHide) {
+                            cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
+                        }
+                    });
+                }
             }
         }
         return this.reverseRows(cell);
