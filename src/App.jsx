@@ -7,7 +7,6 @@ import { Route, Switch } from "react-router-dom";
 
 const App = () => {
   return (
-    // <BrowserRouter>
     <div className="App">
       <SearchContainer />
       <Switch>
@@ -18,7 +17,6 @@ const App = () => {
       </Switch>
       <Pagination />
     </div>
-    // </BrowserRouter>
   );
 }
 

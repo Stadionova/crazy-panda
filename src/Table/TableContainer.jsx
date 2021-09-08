@@ -1,35 +1,46 @@
 import React from 'react';
-import { connect } from "react-redux";
 import { turnOnFilter } from "../store";
 import Table from './Table';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import store from '../store';
 
-const mapStateToProps = (state) => {
-    return {
-        tableColumns: state.tableColumns,
-        isFilterTurnedOn: state.isFilterTurnedOn,
-        pagesData: state.pagesData,
-        arrOfMatches: state.arrOfMatches
-    };
-}
+const TableContainer = () => {
+    const arrOfMatches = useSelector((state) => state.arrOfMatches);
+    const pagesData = store.getState().pagesData;
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        catchClickOnFilter: () => {
-            dispatch(turnOnFilter(true));
+    const [isFilterTurnedOn, catchClickOnFilter] = useState(false);
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(turnOnFilter(isFilterTurnedOn));
+    });
+
+    const tableColumns = {
+        0: '',
+        1: 'A',
+        2: 'B',
+        3: 'C',
+        4: 'D'
+    }
+
+    function changeStatus() {
+        if (isFilterTurnedOn === true) {
+            catchClickOnFilter(false);
+        } else {
+            catchClickOnFilter(true);
         }
     }
-}
 
-class TableContainer extends React.Component {
-    renderTableHeaders(tds, idtr) {
-        for (let key in this.props.tableColumns) {
+    function renderTableHeaders(tds, idtr) {
+        for (let key in tableColumns) {
             if (+key > 0) {
                 tds.push(
                     <td key={key}
                         className={`tr_${idtr}-td_${+key}`}
-                        onClick={this.props.catchClickOnFilter}
+                        onClick={changeStatus}
                         style={{ textAlign: "center" }}>
-                        {this.props.tableColumns[key]}
+                        {tableColumns[key]}
                     </td>
                 );
             } else {
@@ -37,14 +48,16 @@ class TableContainer extends React.Component {
                     <td key={key}
                         className={`tr_${idtr}-td_${+key}`}
                         disabled="disabled"
-                        onClick={this.props.catchClickOnFilter}>
+                        onClick={changeStatus}
+                    >
                     </td>
                 );
             }
         }
         return tds;
     }
-    renderHeadersWithNums(tds, i, idtr) {
+
+    function renderHeadersWithNums(tds, i, idtr) {
         tds.push(
             <td key={i}
                 className={`tr_${idtr}-td_${i}`}
@@ -53,11 +66,12 @@ class TableContainer extends React.Component {
             </td>
         );
     }
-    renderCellsWithData(tds, idtr) {
+
+    function renderCellsWithData(tds, idtr) {
         let currentPageHref = window.location.href.slice(-1);
-        this.renderHeadersWithNums(tds, 0, idtr);
+        renderHeadersWithNums(tds, 0, idtr);
         if (currentPageHref === '/') {
-            this.props.pagesData[1][idtr].forEach((value, index) => {
+            pagesData[1][idtr].forEach((value, index) => {
                 tds.push(
                     <td key={index + 1}
                         className={`tr_${idtr}-td_${index + 1}`}>
@@ -66,7 +80,7 @@ class TableContainer extends React.Component {
                 );
             });
         } else {
-            this.props.pagesData[currentPageHref][idtr].forEach((value, index) => {
+            pagesData[currentPageHref][idtr].forEach((value, index) => {
                 tds.push(
                     <td key={index + 1}
                         className={`tr_${idtr}-td_${index + 1}`}>
@@ -77,14 +91,16 @@ class TableContainer extends React.Component {
         }
         return tds;
     }
-    renderTd = (idtr) => {
+
+    function renderTd(idtr) {
         let tds = [];
         return idtr === 0
-            ? this.renderTableHeaders(tds, idtr)
-            : this.renderCellsWithData(tds, idtr);
+            ? renderTableHeaders(tds, idtr)
+            : renderCellsWithData(tds, idtr);
     }
-    reverseRows(cell) {
-        if (this.props.isFilterTurnedOn === true) {
+
+    function reverseRows(cell) {
+        if (isFilterTurnedOn === true) {
             let cellCopyToReverse = cell.slice(1).reverse();
             let cellHeaders = [cell[0]];
             let newArray = cellHeaders.concat(cellCopyToReverse);
@@ -93,39 +109,39 @@ class TableContainer extends React.Component {
             return cell;
         }
     }
-    renderTable = () => {
+
+    function renderTable() {
         let cell = [];
         let currentPageHref = window.location.href.slice(-1);
-        cell.push(<tr key={0} id={0}>{this.renderTd(0)}</tr>);
-        if (this.props.arrOfMatches === undefined) {
+        cell.push(<tr key={0} id={0}>{renderTd(0)}</tr>);
+        if (arrOfMatches === undefined) {
             if (currentPageHref === '/') {
-                console.log('this.props.pagesData ', this.props.pagesData);
-                for (let key in this.props.pagesData[1]) {
-                    cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
+                for (let key in pagesData[1]) {
+                    cell.push(<tr key={key} id={key}>{renderTd(key)}</tr>);
                 }
             } else {
-                for (let key in this.props.pagesData[currentPageHref]) {
-                    cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
+                for (let key in pagesData[currentPageHref]) {
+                    cell.push(<tr key={key} id={key}>{renderTd(key)}</tr>);
                 }
             }
         } else {
-            for (let key in this.props.pagesData[currentPageHref]) {
-                this.props.arrOfMatches[currentPageHref]?.forEach((trToHide) => {
+            for (let key in pagesData[currentPageHref]) {
+                arrOfMatches[currentPageHref]?.forEach((trToHide) => {
                     if (key === trToHide) {
-                        cell.push(<tr key={key} id={key}>{this.renderTd(key)}</tr>);
+                        cell.push(<tr key={key} id={key}>{renderTd(key)}</tr>);
                     }
                 });
             }
         }
-        return this.reverseRows(cell);
+        return reverseRows(cell);
     }
-    render() {
-        return (
-            <>
-                <Table renderTable={this.renderTable} />
-            </>
-        )
-    }
+
+    return (
+        <>
+            <Table renderTable={renderTable} />
+        </>
+    )
+
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TableContainer);
+export default TableContainer;
