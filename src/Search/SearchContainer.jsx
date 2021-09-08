@@ -24,9 +24,14 @@ const mapDispatchToProps = (dispatch) => {
 
 class SearchContainer extends React.Component {
     render() {
-        let currentPageHref = window.location.href.slice(-1);
+        let currentPageHref;
         if (this.props.newTaskInputValue !== '') {
             let arrOfMatches = {};
+            if (window.location.href.slice(-1) === '/') {
+                currentPageHref = 1;
+            } else {
+                currentPageHref = window.location.href.slice(-1);
+            }
             for (let key in this.props.pagesData[currentPageHref]) {
                 this.props.pagesData[currentPageHref][key].map(task => {
                     if (task === this.props.newTaskInputValue) {

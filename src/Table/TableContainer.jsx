@@ -112,7 +112,14 @@ const TableContainer = () => {
 
     function renderTable() {
         let cell = [];
-        let currentPageHref = window.location.href.slice(-1);
+        let currentPageHref;
+
+        if (window.location.href.slice(-1) === '/') {
+            currentPageHref = 1;
+        } else {
+            currentPageHref = window.location.href.slice(-1);
+        }
+
         cell.push(<tr key={0} id={0}>{renderTd(0)}</tr>);
         if (arrOfMatches === undefined) {
             if (currentPageHref === '/') {
